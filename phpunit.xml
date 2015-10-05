@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="Package Test Suite">
+            <directory suffix=".php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="SELENIUM_DRIVER_HOST" value="http://localhost:4444/wd/hub"/>
+        <env name="DRIVER_BROWSER_NAME" value="firefox"/>
+        <env name="DRIVER_BROWSER_USER_AGENT"
+             value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0"/>
+    </php>
+</phpunit>

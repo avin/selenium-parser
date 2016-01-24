@@ -19,7 +19,7 @@ class PremiumDiRadio extends SeleniumParser
         $email = 'iwantsomeshit'.time().'@gmail.com';
         $password = 'supersecret';
 
-        //Ждем появления кнопки регистрации
+        //Wait register button
         $signUpButton = false;
         while(! $signUpButton){
             $signUpButton = $this->driver->findElement(WebDriverBy::className('signup'));
@@ -29,6 +29,8 @@ class PremiumDiRadio extends SeleniumParser
         $signUpButton->click();
 
         usleep(200);
+
+        //Fill form
 
         $this->driver->findElement(WebDriverBy::id('member_email'))->click();
         $this->driver->getKeyboard()->sendKeys($email);
@@ -42,15 +44,17 @@ class PremiumDiRadio extends SeleniumParser
         $this->driver->findElement(WebDriverBy::xpath("//button[contains(.,'Create Free Account')]"))->click();
 
 
+        //Wait user-panel button
         $userButton = false;
-        //user-name
         while(! $userButton){
             $userButton = $this->driver->findElement(WebDriverBy::className("user-name"));
             usleep(200);
         }
 
+        //Activate trial
         $this->driver->get("http://www.di.fm/member/premium/trial/activate");
 
+        //Wait user-panel button
         $userType = false;
         //user-name
         while(! $userType){
@@ -60,6 +64,7 @@ class PremiumDiRadio extends SeleniumParser
 
         $this->driver->get("http://www.di.fm/settings");
 
+        //Get key from settings page
         $key = false;
         while(! $key){
             $key = $this->driver->findElement(WebDriverBy::className("listen-key"));

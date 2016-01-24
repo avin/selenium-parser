@@ -1,9 +1,8 @@
 <?php
 namespace Avin\SeleniumParser;
 
+use Facebook\WebDriver\Exception\WebDriverException;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\WebDriverKeys;
 use Mockery\Exception;
 
 class PremiumDiRadio extends SeleniumParser
@@ -16,23 +15,30 @@ class PremiumDiRadio extends SeleniumParser
     {
         $this->driver->get("http://www.di.fm");
 
-        $email = 'iwantsomeshit'.time().'@gmail.com';
+        $email = 'iwantsomeshit' . time() . '@gmail.com';
         $password = 'supersecret';
 
         //Wait register button
         $signUpButton = false;
-        while(! $signUpButton){
-            $signUpButton = $this->driver->findElement(WebDriverBy::className('signup'));
-            usleep(200);
+        while (!$signUpButton) {
+            try {
+                $signUpButton = $this->driver->findElement(WebDriverBy::className('signup'));
+            } catch (WebDriverException $exception) {
+                usleep(200);
+            }
         }
 
         $signUpButton->click();
 
-        usleep(200);
 
         //Fill form
 
-        $this->driver->findElement(WebDriverBy::id('member_email'))->click();
+        $emailField = $this->driver->findElement(WebDriverBy::id('member_email'));
+        while (! $emailField->isDisplayed()){
+            usleep(200);
+        }
+
+        $emailField->click();
         $this->driver->getKeyboard()->sendKeys($email);
 
         $this->driver->findElement(WebDriverBy::id('member_password'))->click();
@@ -46,9 +52,12 @@ class PremiumDiRadio extends SeleniumParser
 
         //Wait user-panel button
         $userButton = false;
-        while(! $userButton){
-            $userButton = $this->driver->findElement(WebDriverBy::className("user-name"));
-            usleep(200);
+        while (!$userButton) {
+            try {
+                $userButton = $this->driver->findElement(WebDriverBy::className("user-name"));
+            } catch (WebDriverException $exception) {
+                usleep(200);
+            }
         }
 
         //Activate trial
@@ -57,18 +66,24 @@ class PremiumDiRadio extends SeleniumParser
         //Wait user-panel button
         $userType = false;
         //user-name
-        while(! $userType){
-            $userType = $this->driver->findElement(WebDriverBy::xpath("//span[contains(.,'Premium Member')]"));
-            usleep(200);
+        while (!$userType) {
+            try {
+                $userType = $this->driver->findElement(WebDriverBy::xpath("//span[contains(.,'Premium Member')]"));
+            } catch (WebDriverException $exception) {
+                usleep(200);
+            }
         }
 
         $this->driver->get("http://www.di.fm/settings");
 
         //Get key from settings page
         $key = false;
-        while(! $key){
-            $key = $this->driver->findElement(WebDriverBy::className("listen-key"));
-            usleep(200);
+        while (!$key) {
+            try {
+                $key = $this->driver->findElement(WebDriverBy::className("listen-key"));
+            } catch (WebDriverException $exception) {
+                usleep(200);
+            }
         }
 
 
